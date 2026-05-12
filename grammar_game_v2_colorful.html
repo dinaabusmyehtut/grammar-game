@@ -1,0 +1,386 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+#gw{padding:1rem 0;font-family:var(--font-sans)}
+.screen{display:none}.screen.active{display:block}
+.hero-title{font-size:24px;font-weight:500;text-align:center;margin-bottom:4px;color:#534AB7}
+.hero-sub{text-align:center;font-size:13px;color:var(--color-text-secondary);margin-bottom:1.5rem}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin-top:1rem}
+.tbtn{border:none;border-radius:16px;padding:14px 8px;cursor:pointer;text-align:center;transition:transform .15s;color:#fff;font-family:var(--font-sans);font-size:13px;font-weight:500}
+.tbtn:hover{transform:scale(1.05)}.tbtn:active{transform:scale(.96)}
+.tbtn .ico{font-size:28px;display:block;margin-bottom:6px}
+.tbtn .sub{font-size:11px;opacity:.85;display:block;margin-top:3px;font-weight:400}
+
+.hud{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.hud-pill{padding:5px 12px;border-radius:999px;font-size:13px;font-weight:500;color:#fff}
+.pbar-wrap{flex:1;height:8px;background:#E1F5EE;border-radius:999px;min-width:60px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:999px;background:#1D9E75;transition:width .4s}
+
+.topic-badge{display:inline-block;padding:4px 14px;border-radius:999px;font-size:12px;font-weight:500;color:#fff;margin-bottom:10px}
+.qcard{background:#fff;border-radius:20px;padding:1.25rem;margin-bottom:12px;border:2px solid #E6F1FB}
+.qtxt{font-size:16px;font-weight:500;color:#0C447C;line-height:1.5}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.obtn{border:2px solid #B5D4F4;background:#E6F1FB;border-radius:14px;padding:.75rem 1rem;cursor:pointer;font-size:14px;font-weight:500;color:#0C447C;text-align:left;transition:all .15s;font-family:var(--font-sans)}
+.obtn:hover:not(:disabled){background:#B5D4F4;transform:scale(1.02)}
+.obtn.correct{background:#EAF3DE;border-color:#639922;color:#27500A;transform:scale(1.03)}
+.obtn.wrong{background:#FCEBEB;border-color:#E24B4A;color:#791F1F}
+.obtn:disabled{cursor:default}
+
+.fb{margin-top:12px;padding:12px 16px;border-radius:14px;font-size:14px;font-weight:500;display:none;border:2px solid}
+.fb.ok{background:#EAF3DE;color:#27500A;border-color:#639922;display:block}
+.fb.bad{background:#FCEBEB;color:#791F1F;border-color:#E24B4A;display:block}
+.next-btn{margin-top:12px;padding:10px 28px;border-radius:999px;background:#534AB7;color:#fff;border:none;font-size:15px;font-weight:500;cursor:pointer;font-family:var(--font-sans);transition:transform .15s;display:none}
+.next-btn:hover{transform:scale(1.04)}.next-btn.show{display:inline-block}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:1rem 0}
+.stat-card{border-radius:16px;padding:1rem;text-align:center;color:#fff}
+.stat-card .num{font-size:30px;font-weight:500}
+.stat-card .lbl{font-size:12px;opacity:.85;margin-top:2px}
+.result-msg{font-size:16px;font-weight:500;text-align:center;margin:1rem 0;color:var(--color-text-primary)}
+.action-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:1rem}
+.abtn{padding:10px 24px;border-radius:999px;border:none;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-sans);color:#fff;transition:transform .15s}
+.abtn:hover{transform:scale(1.05)}
+
+.confetti-wrap{text-align:center;font-size:36px;letter-spacing:4px;margin-bottom:8px}
+.streak-flash{text-align:center;font-size:13px;font-weight:500;color:#BA7517;min-height:20px;margin-top:4px}
+</style>
+
+<div id="gw">
+<h2 class="sr-only">Colorful Grammar Review Game — Grade 6, Mr. Mostafa Awad</h2>
+
+<div id="s-home" class="screen active">
+  <div class="hero-title">🎓 Grammar Review Game</div>
+  <div class="hero-sub">Grade 6 · Term 2 · By Mr. Mostafa Awad</div>
+  <div class="topic-grid">
+    <button class="tbtn" style="background:#534AB7" onclick="startTopic(0)">
+      <span class="ico">🔗</span>Conjunction Pairs<span class="sub">both / either / neither</span>
+    </button>
+    <button class="tbtn" style="background:#0F6E56" onclick="startTopic(1)">
+      <span class="ico">👤</span>Relative Pronouns<span class="sub">who / which / whose</span>
+    </button>
+    <button class="tbtn" style="background:#993C1D" onclick="startTopic(2)">
+      <span class="ico">🔤</span>Prefixes re & un<span class="sub">rebuild / unhappy</span>
+    </button>
+    <button class="tbtn" style="background:#185FA5" onclick="startTopic(3)">
+      <span class="ico">⏰</span>Present Perfect<span class="sub">have / has + pp</span>
+    </button>
+    <button class="tbtn" style="background:#854F0B" onclick="startTopic(4)">
+      <span class="ico">🛠️</span>Suffixes -ify & -er<span class="sub">simplify / driver</span>
+    </button>
+    <button class="tbtn" style="background:#993556" onclick="startTopic(5)">
+      <span class="ico">🕰️</span>Used to<span class="sub">past habits</span>
+    </button>
+    <button class="tbtn" style="background:#3B6D11" onclick="startTopic(6)">
+      <span class="ico">⚡</span>Prefix/Suffix en<span class="sub">enrich / widen</span>
+    </button>
+    <button class="tbtn" style="background:#0F6E56" onclick="startTopic(7)">
+      <span class="ico">🔮</span>First Conditional<span class="sub">if + will</span>
+    </button>
+    <button class="tbtn" style="background:linear-gradient(135deg,#534AB7,#D85A30);grid-column:1/-1" onclick="startTopic(8)">
+      <span class="ico">🏆</span>Mix All Topics — Full Challenge!<span class="sub">20 mixed questions from all topics</span>
+    </button>
+  </div>
+</div>
+
+<div id="s-quiz" class="screen">
+  <div class="hud">
+    <div class="hud-pill" style="background:#534AB7" id="h-q">Q 1/10</div>
+    <div class="pbar-wrap"><div class="pbar-fill" id="pbar" style="width:10%"></div></div>
+    <div class="hud-pill" style="background:#BA7517" id="h-score">⭐ 0</div>
+    <div class="hud-pill" id="h-timer" style="background:#185FA5">⏱ 20s</div>
+  </div>
+  <div class="streak-flash" id="streak-msg"></div>
+  <div id="topic-badge-wrap"></div>
+  <div class="qcard">
+    <div class="qtxt" id="qtxt"></div>
+    <div class="opts" id="opts"></div>
+  </div>
+  <div class="fb" id="fb"></div>
+  <button class="next-btn" id="nxt" onclick="nextQ()">Next ➜</button>
+</div>
+
+<div id="s-result" class="screen">
+  <div class="confetti-wrap" id="confetti-wrap"></div>
+  <div class="result-msg" id="r-msg"></div>
+  <div class="stat-grid">
+    <div class="stat-card" style="background:#534AB7"><div class="num" id="r-score">0</div><div class="lbl">Score</div></div>
+    <div class="stat-card" style="background:#0F6E56"><div class="num" id="r-correct">0/0</div><div class="lbl">Correct</div></div>
+    <div class="stat-card" style="background:#BA7517"><div class="num" id="r-pct">0%</div><div class="lbl">Accuracy</div></div>
+  </div>
+  <div class="action-row">
+    <button class="abtn" style="background:#534AB7" onclick="retry()">↺ Try Again</button>
+    <button class="abtn" style="background:#185FA5" onclick="goHome()">🏠 Menu</button>
+  </div>
+</div>
+</div>
+
+<script>
+const AC = new (window.AudioContext || window.webkitAudioContext)();
+
+function beep(freq, dur, type, vol, delay){
+  try{
+    const o=AC.createOscillator(), g=AC.createGain();
+    o.connect(g); g.connect(AC.destination);
+    o.type=type||'sine'; o.frequency.value=freq;
+    g.gain.setValueAtTime(vol||0.3, AC.currentTime+(delay||0));
+    g.gain.exponentialRampToValueAtTime(0.001, AC.currentTime+(delay||0)+dur);
+    o.start(AC.currentTime+(delay||0));
+    o.stop(AC.currentTime+(delay||0)+dur);
+  }catch(e){}
+}
+
+function playCorrect(){
+  beep(523,0.12,'sine',0.3,0);
+  beep(659,0.12,'sine',0.3,0.1);
+  beep(784,0.2,'sine',0.35,0.2);
+}
+function playWrong(){
+  beep(300,0.15,'sawtooth',0.25,0);
+  beep(220,0.25,'sawtooth',0.25,0.15);
+}
+function playStreak(){
+  [523,659,784,1047].forEach((f,i)=>beep(f,0.1,'sine',0.3,i*0.08));
+}
+function playTick(){
+  beep(880,0.04,'square',0.1,0);
+}
+function playFanfare(){
+  [523,659,784,659,784,1047].forEach((f,i)=>beep(f,0.15,'sine',0.35,i*0.1));
+}
+function playTimeout(){
+  beep(440,0.08,'sine',0.2,0);
+  beep(392,0.08,'sine',0.2,0.1);
+  beep(349,0.3,'sine',0.2,0.2);
+}
+
+const COLORS=['#534AB7','#0F6E56','#993C1D','#185FA5','#854F0B','#993556','#3B6D11','#0F6E56'];
+const TNAMES=['Conjunction Pairs','Relative Pronouns','Prefixes re & un','Present Perfect','Suffixes -ify & -er','Used to','Prefix/Suffix en','First Conditional'];
+
+const ALL=[
+  [
+    {q:"I want to eat ___ the green apple ___ the red apple. (both)",opts:["both...and","either...or","neither...nor","not only...but"],a:0,e:"'Both...and' joins two things you want."},
+    {q:"I will eat ___ the green ___ the red apple — I'll pick one.",opts:["both...and","either...or","neither...nor","so...that"],a:1,e:"'Either...or' shows a choice between two things."},
+    {q:"I want ___ the red ___ the green apple — I don't want any.",opts:["both...and","either...or","neither...nor","whether...or"],a:2,e:"'Neither...nor' means none of the two options."},
+    {q:"She can speak ___ French ___ Spanish. (she speaks both!)",opts:["neither...nor","both...and","either...nor","so...and"],a:1,e:"'Both...and' joins two positive things."},
+    {q:"He is ___ lazy ___ careless — he works very hard.",opts:["both...and","either...or","neither...nor","not...but"],a:2,e:"'Neither...nor' means he is NOT lazy and NOT careless."},
+    {q:"___ you study hard ___ you will fail. Choose one path!",opts:["Both...and","Either...or","Neither...nor","Whether...and"],a:1,e:"'Either...or' presents a two-option choice."},
+    {q:"I'd like ___ tea ___ coffee please. (I'll have both!)",opts:["either...or","neither...nor","both...and","not...but"],a:2,e:"'Both...and' means you want the two things together."},
+    {q:"The movie was ___ interesting ___ exciting. (negative for both)",opts:["both...and","either...or","neither...nor","so...that"],a:2,e:"'Neither...nor' negates both adjectives."},
+    {q:"You can go ___ by bus ___ by train — it's up to you.",opts:["both...and","neither...nor","either...or","not only...but"],a:2,e:"'Either...or' gives a choice."},
+    {q:"___ Ahmed ___ Ali passed the test. They both did great!",opts:["Either...or","Neither...nor","Both...and","Whether...or"],a:2,e:"'Both...and' means two people succeeded."},
+  ],
+  [
+    {q:"The engineer ___ designed the robot is very smart.",opts:["which","whose","who","what"],a:2,e:"'Who' is used for people (persons)."},
+    {q:"The pen ___ I bought is wonderful.",opts:["who","whose","whom","which"],a:3,e:"'Which' is used for things or animals (non-human)."},
+    {q:"The engineer ___ invention won the prize is happy.",opts:["who","which","whose","that"],a:2,e:"'Whose' shows possession — owner before, owned after."},
+    {q:"The doctor ___ treated me is very kind.",opts:["which","whose","who","what"],a:2,e:"'Who' refers to people."},
+    {q:"I found the book ___ you lost.",opts:["who","whose","whom","which"],a:3,e:"'Which' refers to things."},
+    {q:"The student ___ bag was stolen reported it to the teacher.",opts:["who","which","whose","that"],a:2,e:"'Whose' shows the bag belongs to the student."},
+    {q:"The cat ___ climbed the tree is mine.",opts:["who","whose","which","what"],a:2,e:"'Which' is used for animals."},
+    {q:"The scientist ___ discovered this is brilliant.",opts:["which","whose","who","what"],a:2,e:"'Who' refers to a person (scientist)."},
+    {q:"This is the house ___ my grandfather built.",opts:["who","whose","whom","which"],a:3,e:"'Which' refers to a thing (house)."},
+    {q:"The girl ___ mother is a teacher is in my class.",opts:["who","which","whose","that"],a:2,e:"'Whose' shows possession — the mother belongs to the girl."},
+  ],
+  [
+    {q:"What does the prefix 're' mean?",opts:["not","again or back","cause to be","perform an action"],a:1,e:"'Re' means 'again' or 'back' — e.g. rebuild = build again."},
+    {q:"What does the prefix 'un' mean?",opts:["again","back","not","cause"],a:2,e:"'Un' means 'not' — e.g. unhappy = not happy."},
+    {q:"Which word means 'to write again'?",opts:["unwrite","rewrite","prewrite","miswrite"],a:1,e:"'Rewrite' = to write again to improve."},
+    {q:"Which word means 'not safe'?",opts:["resafe","presafe","unsafe","insafe"],a:2,e:"'Unsafe' = not safe. (prefix un + safe)"},
+    {q:"'Rebuild' means:",opts:["to build for the first time","to build again after damage","not to build","to build slowly"],a:1,e:"'Rebuild' = to build again after it is damaged."},
+    {q:"Which word uses the prefix 'un'?",opts:["return","recycle","unfair","reuse"],a:2,e:"'Unfair' = not fair or not equal."},
+    {q:"'Return' means:",opts:["to turn left","to turn right","to come or go back","to turn randomly"],a:2,e:"'Return' = to come or go back. (re + turn)"},
+    {q:"Which word means 'to open a lock'?",opts:["relock","unlock","unclose","prelock"],a:1,e:"'Unlock' = to open a lock. (un + lock)"},
+    {q:"'Recycle' means:",opts:["to make new things","to throw away","to use again to help the Earth","to clean again"],a:2,e:"'Recycle' = to use again to help the Earth."},
+    {q:"Which does NOT use the prefix 're'?",opts:["rebuild","rewrite","unhappy","return"],a:2,e:"'Unhappy' uses prefix 'un', not 're'."},
+  ],
+  [
+    {q:"The present perfect is formed with:",opts:["did + verb","was/were + verb","have/has + past participle","will + verb"],a:2,e:"Present perfect = have/has + past participle."},
+    {q:"She ___ her homework. (positive)",opts:["has done","have done","did done","does done"],a:0,e:"'She' is singular → use 'has'. Has + done (past participle)."},
+    {q:"We ___ Luxor. (positive)",opts:["has visited","have visited","visited have","did visit"],a:1,e:"'We' is plural → use 'have'. Have + visited."},
+    {q:"I ___ the Pyramids yet. (negative)",opts:["hasn't visited","haven't visited","didn't visited","not visited"],a:1,e:"Negative: haven't + past participle. 'I' → haven't."},
+    {q:"He ___ his lunch. (negative)",opts:["haven't eaten","has not ate","hasn't eaten","didn't eaten"],a:2,e:"'He' is singular → hasn't eaten."},
+    {q:"Which is a key word for present perfect?",opts:["yesterday","last year","since 2021","two days ago"],a:2,e:"'Since' is a key word for present perfect."},
+    {q:"The past participle of 'go' is:",opts:["goed","went","gone","going"],a:2,e:"go → went → gone. The past participle is 'gone'."},
+    {q:"The past participle of 'write' is:",opts:["wrote","written","writed","writing"],a:1,e:"write → wrote → written. The past participle is 'written'."},
+    {q:"___ you done your homework? (yes/no question)",opts:["Did","Have","Has","Were"],a:1,e:"Yes/No question: Have/Has + subject + past participle."},
+    {q:"Which sentence uses present perfect correctly?",opts:["She has go to school.","They have went home.","He has eaten his lunch.","I have ate breakfast."],a:2,e:"'He has eaten' is correct: has + eaten (past participle of eat)."},
+  ],
+  [
+    {q:"What does the suffix '-ify' mean?",opts:["who performs an action","to cause or to become","not","again"],a:1,e:"'-ify' means to cause or to become — e.g. simplify = to make simple."},
+    {q:"What does the suffix '-er' mean?",opts:["to cause","not","who performs an action","to make"],a:2,e:"'-er' means who performs an action — e.g. driver = a person who drives."},
+    {q:"'Simplify' means:",opts:["to make complex","to make simple or easier","to make pure","to make clear"],a:1,e:"simple → simplify = to make something simple or easier."},
+    {q:"'Purify' means:",opts:["to make simple","to make larger","to make pure or free from dirt","to make shorter"],a:2,e:"pure → purify = to make something pure or free from dirt."},
+    {q:"A 'baker' is:",opts:["a person who drives","a person who teaches","a person who bakes bread or cakes","a person who writes"],a:2,e:"bake + er = baker = a person who bakes bread or cakes."},
+    {q:"A 'teacher' is:",opts:["a person who bakes","a person who teaches students","a person who drives","a person who sings"],a:1,e:"teach + er = teacher = a person who teaches students."},
+    {q:"Which word uses the suffix '-ify'?",opts:["driver","baker","clarify","teacher"],a:2,e:"'Clarify' (clear → clarify) uses the suffix -ify."},
+    {q:"Which word uses the suffix '-er'?",opts:["purify","simplify","driver","clarify"],a:2,e:"'Driver' (drive → driver) uses the suffix -er."},
+    {q:"'Clarify' means:",opts:["to make darker","to make something clear or easy to understand","to make larger","to make shorter"],a:1,e:"clear → clarify = to make something clear or easy to understand."},
+    {q:"A 'driver' is:",opts:["a person who bakes","a person who teaches","a person who writes","a person who drives a vehicle"],a:3,e:"drive + er = driver = a person who drives a vehicle."},
+  ],
+  [
+    {q:"We use 'used to' for:",opts:["future habits","things happening now","past habits that don't happen anymore","present perfect actions"],a:2,e:"'Used to' describes past habits that no longer happen."},
+    {q:"Choose the correct affirmative sentence:",opts:["I use to play football.","I used to played football.","I used to play football.","I used play football."],a:2,e:"Affirmative: Subject + used to + base verb."},
+    {q:"Negative 'used to': Schools ___ have computers.",opts:["didn't used to","didn't use to","doesn't used to","not used to"],a:1,e:"Negative: Subject + didn't use to + base verb."},
+    {q:"Yes/No question: ___ you use to go to school by bus?",opts:["Did","Does","Used","Have"],a:0,e:"Yes/No question: Did + subject + use to + base verb."},
+    {q:"Wh-question: What ___ you use to eat as a child?",opts:["have","did","does","used"],a:1,e:"Wh-question: Wh-word + did + subject + use to + base verb."},
+    {q:"He ___ live in Cairo, but now he lives in Alexandria.",opts:["uses to","used to","use to","is used to"],a:1,e:"'Used to' for a past habit that has changed."},
+    {q:"Which sentence is correct?",opts:["She didn't used to eat fish.","She didn't use to eating fish.","She didn't use to eat fish.","She not used to eat fish."],a:2,e:"Negative: Subject + didn't use to + base verb."},
+    {q:"___ they use to walk to school? Yes, they ___.",opts:["Did / did","Have / have","Were / were","Do / do"],a:0,e:"Question with 'used to': Did + subject + use to. Answer: Yes, they did."},
+    {q:"My grandfather ___ ride a horse to work.",opts:["uses to","is used to","used to","use to"],a:2,e:"'Used to' for a past habit."},
+    {q:"What did she use to ___ in her free time?",opts:["doing","did","does","do"],a:3,e:"After 'use to' in a question we use the base verb (do)."},
+  ],
+  [
+    {q:"The prefix 'en' means:",opts:["not","again","to cause to be or to put into","who performs an action"],a:2,e:"Prefix 'en' = to cause to be or to put into."},
+    {q:"The suffix 'en' means:",opts:["again","not","who performs an action","to make or to become"],a:3,e:"Suffix 'en' = to make or to become — e.g. widen = to make wider."},
+    {q:"'Enlarge' means:",opts:["to make smaller","to make larger","to make richer","to make darker"],a:1,e:"en + large = enlarge = to make larger."},
+    {q:"'Encourage' means:",opts:["to put at risk","to make sure","to give support and confidence","to put inside and close"],a:2,e:"en + courage → encourage = to give support and confidence."},
+    {q:"'Widen' means:",opts:["to make darker","to make shorter","to make wider","to make deeper"],a:2,e:"wide + en = widen = to make wider."},
+    {q:"'Darken' means:",opts:["to make lighter","to make darker","to make richer","to make shorter"],a:1,e:"dark + en = darken = to make darker."},
+    {q:"Which word uses the PREFIX 'en'?",opts:["widen","soften","enrich","brighten"],a:2,e:"'Enrich' uses the prefix 'en' (en + rich)."},
+    {q:"Which word uses the SUFFIX 'en'?",opts:["enable","endanger","ensure","lighten"],a:3,e:"'Lighten' uses the suffix 'en' (light + en)."},
+    {q:"'Endanger' means:",opts:["to make safe","to make larger","to put at risk","to make sure"],a:2,e:"en + danger = endanger = to put at risk."},
+    {q:"'Soften' means:",opts:["to make harder","to make soft","to make darker","to make richer"],a:1,e:"soft + en = soften = to make soft."},
+  ],
+  [
+    {q:"We use the first conditional to talk about:",opts:["past habits","imaginary situations","possible situations in the future","present facts"],a:2,e:"First conditional = possible situations in the future."},
+    {q:"First conditional is formed with:",opts:["If + past simple, will + verb","If + present simple, will + base verb","If + past perfect, would + verb","If + will, present simple"],a:1,e:"Formation: If + present simple, subject + will + base verb."},
+    {q:"If you ___ hard, you will pass the test.",opts:["studied","will study","study","studying"],a:2,e:"After 'if' in first conditional, use present simple (study)."},
+    {q:"If you take the monorail, you ___ faster.",opts:["arrive","will arrive","arrived","would arrive"],a:1,e:"Main clause: subject + will + base verb."},
+    {q:"If you go to bed early, you ___ tired.",opts:["won't feel","don't feel","didn't feel","wouldn't feel"],a:0,e:"Negative main clause: won't + base verb."},
+    {q:"Choose the correct first conditional sentence:",opts:["If she trains well, she wins.","If she trained, she would win.","If she trains well, she will win the race.","If she will train, she wins."],a:2,e:"If + present simple (trains), will + base verb (win)."},
+    {q:"We ___ the bus if we arrive at the station on time.",opts:["catch","will catch","caught","would catch"],a:1,e:"Main clause uses 'will + catch'."},
+    {q:"If you ___ the electric bus, the environment will be cleaner.",opts:["will use","used","use","using"],a:2,e:"After 'if', use present simple — 'use'."},
+    {q:"Which sentence is a first conditional?",opts:["If I were rich, I would travel.","If it rains, I will stay home.","If she had studied, she would have passed.","She studies every day."],a:1,e:"'If it rains, I will stay home' = first conditional."},
+    {q:"If he doesn't hurry, he ___ the bus.",opts:["miss","misses","will miss","would miss"],a:2,e:"Negative first conditional: didn't hurry → will miss."},
+  ],
+];
+
+function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+
+let curTopic=-1,qs=[],qi=0,score=0,correct=0,streak=0,timerInt,timeLeft=20,answered=false;
+
+function goHome(){show('s-home');clearInterval(timerInt)}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function retry(){startTopic(curTopic)}
+
+function startTopic(idx){
+  curTopic=idx;
+  if(idx===8){
+    let pool=ALL.flatMap(t=>t);
+    qs=shuffle(pool).slice(0,20);
+  } else {
+    qs=shuffle([...ALL[idx]]).slice(0,10);
+  }
+  qi=0;score=0;correct=0;streak=0;
+  show('s-quiz');
+  renderQ();
+}
+
+function renderQ(){
+  answered=false;
+  const q=qs[qi], total=qs.length;
+  document.getElementById('h-q').textContent='Q '+(qi+1)+'/'+total;
+  document.getElementById('pbar').style.width=Math.round((qi/total)*100)+'%';
+  document.getElementById('h-score').textContent='⭐ '+score;
+  document.getElementById('streak-msg').textContent='';
+
+  const color=curTopic===8?'#534AB7':COLORS[curTopic];
+  const tname=curTopic===8?'All Topics Mix':TNAMES[curTopic];
+  document.getElementById('topic-badge-wrap').innerHTML=
+    '<div class="topic-badge" style="background:'+color+'">📘 '+tname+'</div>';
+
+  document.getElementById('qtxt').textContent=q.q;
+
+  const fb=document.getElementById('fb');
+  fb.className='fb'; fb.textContent='';
+
+  const nxt=document.getElementById('nxt');
+  nxt.className='next-btn';
+
+  const opts=document.getElementById('opts');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='obtn'; b.textContent=o;
+    b.onclick=()=>answer(i);
+    opts.appendChild(b);
+  });
+
+  clearInterval(timerInt);
+  timeLeft=20;
+  updateTimer();
+  timerInt=setInterval(()=>{
+    timeLeft--;
+    updateTimer();
+    if(timeLeft<=5 && timeLeft>0) playTick();
+    if(timeLeft<=0){clearInterval(timerInt);answer(-1)}
+  },1000);
+}
+
+function updateTimer(){
+  const el=document.getElementById('h-timer');
+  el.textContent='⏱ '+timeLeft+'s';
+  el.style.background=timeLeft<=5?'#A32D2D':timeLeft<=10?'#854F0B':'#185FA5';
+}
+
+function answer(chosen){
+  if(answered) return;
+  answered=true;
+  clearInterval(timerInt);
+  const q=qs[qi];
+  const btns=document.querySelectorAll('.obtn');
+  btns.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb');
+
+  if(chosen===q.a){
+    btns[chosen].classList.add('correct');
+    const bonus=Math.min(timeLeft,10);
+    score+=10+bonus;
+    correct++;
+    streak++;
+    playCorrect();
+    if(streak>=3){
+      playStreak();
+      document.getElementById('streak-msg').textContent='🔥 '+streak+' in a row! Amazing!';
+    } else {
+      const msgs=['Great job! 🌟','Excellent! 💪','Well done! 👏','Fantastic! 🎯','Brilliant! 🧠'];
+      document.getElementById('streak-msg').textContent=msgs[Math.floor(Math.random()*msgs.length)];
+    }
+    fb.className='fb ok';
+    fb.innerHTML='✅ Correct! '+q.e;
+  } else {
+    if(chosen>=0) btns[chosen].classList.add('wrong');
+    btns[q.a].classList.add('correct');
+    streak=0;
+    chosen===-1?playTimeout():playWrong();
+    const oops=['Don\'t give up! 💡','Keep trying! 📖','You\'ll get it! 🌈','Study and retry! 💪'];
+    document.getElementById('streak-msg').textContent=chosen===-1?'⏰ Time\'s up!':oops[Math.floor(Math.random()*oops.length)];
+    fb.className='fb bad';
+    fb.innerHTML=(chosen===-1?'⏰ Time\'s up! ':'❌ ')+q.e;
+  }
+  document.getElementById('h-score').textContent='⭐ '+score;
+  document.getElementById('nxt').className='next-btn show';
+}
+
+function nextQ(){
+  qi++;
+  if(qi>=qs.length) showResult();
+  else renderQ();
+}
+
+function showResult(){
+  const total=qs.length;
+  const pct=Math.round((correct/total)*100);
+  document.getElementById('r-score').textContent=score;
+  document.getElementById('r-correct').textContent=correct+'/'+total;
+  document.getElementById('r-pct').textContent=pct+'%';
+  let emoji='',msg='';
+  if(pct>=90){emoji='🏆🌟🎉🥇✨';msg='Outstanding! You are a Grammar Star!';playFanfare();}
+  else if(pct>=70){emoji='🎊👏💪🌈';msg='Great job! Keep it up!';playCorrect();}
+  else if(pct>=50){emoji='😊📖💡';msg='Good effort! Review and try again!';beep(440,0.3,'sine',0.25,0);}
+  else{emoji='📚🌱💪';msg="Don't worry — study and you'll shine!";playWrong();}
+  document.getElementById('confetti-wrap').textContent=emoji;
+  document.getElementById('r-msg').textContent=msg;
+  show('s-result');
+}
+</script>
